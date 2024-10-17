@@ -1,10 +1,8 @@
 package br.edu.ibmec.cloud.ecommerce.entity;
-
 import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
-
 import lombok.Data;
-import nonapi.io.github.classgraph.json.Id;
+import org.springframework.data.annotation.Id;
 
 @Data
 @Container(containerName = "clients")

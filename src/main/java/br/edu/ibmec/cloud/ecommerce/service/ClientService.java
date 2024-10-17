@@ -23,7 +23,7 @@ public class ClientService {
         this.clienteRepository.save(cliente);
     }
 
-    public Optional<Client> findById(String clienteId) {
+    public java.util.Optional<Client> findById(String clienteId) {
         return this.clienteRepository.findById(clienteId);
     }
 
@@ -36,7 +36,7 @@ public class ClientService {
     }
 
     public void delete(String clienteId) throws Exception {
-        Optional<Client> optCliente = this.clienteRepository.findById(clienteId);
+        java.util.Optional<Client> optCliente = this.clienteRepository.findById(clienteId);
 
         if (!optCliente.isPresent()) {
             throw new Exception("Cliente não encontrado para exclusão");
@@ -46,7 +46,7 @@ public class ClientService {
     }
 
     public void update(String clienteId, Client clienteAtualizado) throws Exception {
-        Optional<Client> optCliente = this.clienteRepository.findById(clienteId);
+        java.util.Optional<Client> optCliente = this.clienteRepository.findById(clienteId);
 
         if (!optCliente.isPresent()) {
             throw new Exception("Cliente não encontrado para atualização");

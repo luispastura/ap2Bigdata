@@ -1,14 +1,10 @@
 package br.edu.ibmec.cloud.ecommerce.service;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.azure.cosmos.implementation.guava25.base.Optional;
-
 import br.edu.ibmec.cloud.ecommerce.entity.Compra;
 import br.edu.ibmec.cloud.ecommerce.entity.Product;
 import br.edu.ibmec.cloud.ecommerce.repository.ClientRepository;
@@ -30,16 +26,16 @@ public class CompraService {
 
     public void processarCompra(String clienteId, List<String> produtosIds) throws Exception {
         // Verificar se o cliente existe
-        Optional<Client> optCliente = clienteRepository.findById(clienteId);
+        java.util.Optional<br.edu.ibmec.cloud.ecommerce.entity.Client> optCliente = clienteRepository.findById(clienteId);
         if (!optCliente.isPresent()) {
             throw new Exception("Cliente não encontrado");
         }
-        Client cliente = optCliente.get();
+        Client cliente = (Client) optCliente.get();
 
         // Verificar se os produtos existem e calcular o valor total
         double valorTotal = 0.0;
         for (String produtoId : produtosIds) {
-            Optional<Product> optProduto = productRepository.findById(produtoId);
+            java.util.Optional<Product> optProduto = productRepository.findById(produtoId);
             if (!optProduto.isPresent()) {
                 throw new Exception("Produto com ID " + produtoId + " não encontrado");
             }
@@ -53,7 +49,7 @@ public class CompraService {
         compra.setProdutosIds(produtosIds);
         compra.setValorTotal(valorTotal);
         compra.setDataCompra(LocalDateTime.now());
-        compra.setRegiao(cliente.getRegiao());
+        compra.setRegiao(((Compra) cliente).getRegiao());
 
         // Salvar a compra no CosmosDB
         compraRepository.save(compra);
