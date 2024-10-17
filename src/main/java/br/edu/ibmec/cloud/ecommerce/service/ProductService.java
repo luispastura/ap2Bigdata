@@ -1,14 +1,10 @@
 package br.edu.ibmec.cloud.ecommerce.service;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.azure.cosmos.models.PartitionKey;
-
 import br.edu.ibmec.cloud.ecommerce.entity.Product;
 import br.edu.ibmec.cloud.ecommerce.repository.ProductRepository;
 

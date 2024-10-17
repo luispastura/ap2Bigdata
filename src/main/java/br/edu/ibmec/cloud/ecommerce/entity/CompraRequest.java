@@ -1,5 +1,4 @@
 package br.edu.ibmec.cloud.ecommerce.entity;
-
 import lombok.Data;
 import java.util.List;
 

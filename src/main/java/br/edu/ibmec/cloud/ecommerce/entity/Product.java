@@ -1,10 +1,7 @@
 package br.edu.ibmec.cloud.ecommerce.entity;
-
 import org.springframework.data.annotation.Id;
-
 import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
-
 import lombok.Data;
 
 @Data

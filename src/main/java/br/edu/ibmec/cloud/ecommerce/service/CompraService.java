@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.azure.cosmos.implementation.guava25.base.Optional;
 import br.edu.ibmec.cloud.ecommerce.entity.Compra;
 import br.edu.ibmec.cloud.ecommerce.entity.Product;
 import br.edu.ibmec.cloud.ecommerce.repository.ClientRepository;
