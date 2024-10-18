@@ -18,8 +18,8 @@ public class ProductService {
         return this.productRepository.findByProductName(productName);
     }
 
-    public Optional<Product> findById(String productId, String category) {
-        return this.productRepository.findById(productId, new PartitionKey(category));
+    public Optional<Product> findById(String productId, String id) {
+        return this.productRepository.findById(productId);
     }
 
     public void save(Product product) {
@@ -27,31 +27,45 @@ public class ProductService {
         this.productRepository.save(product);
     }
 
-    public void delete(String productId) throws Exception {
-
-        Optional<Product> optProduct = this.productRepository.findById(productId);
-
-        if (optProduct.isPresent() == false)
-            throw new Exception("Não encontrei o produto a ser excluido");
-
-        this.productRepository.deleteById(productId, new PartitionKey(optProduct.get().getProductCategory()));
-    }
-
-    public void update(String productId, Product product) throws Exception {
-        Optional<Product> optProduct = this.productRepository.findById(productId);
-    
-        if (!optProduct.isPresent()) {
-            throw new Exception("Não encontrei o produto a ser atualizado");
-        }
-    
-        product.setProductId(optProduct.get().getProductId());
-        product.setProductCategory(optProduct.get().getProductCategory());
-        this.productRepository.save(product);
-    }
-    
-
     public List<Product> findByCategory(String category) {
         return this.productRepository.findByProductCategory(category);
     }
 
-}
+    public void delete(String productId) throws Exception {
+        Optional<Product> optProduct = this.productRepository.findById(productId);
+    
+        if (optProduct.isEmpty()) {
+            throw new Exception("Produto não encontrado para exclusão");
+        }
+    
+        // Obtém a categoria do produto para usar como PartitionKey
+        Product product = optProduct.get();
+        this.productRepository.deleteById(productId, new PartitionKey(product.getProductCategory()));
+    }
+    
+
+    public void update(String productId, Product productAtualizado) throws Exception {
+        Optional<Product> optProduct = this.productRepository.findById(productId);
+    
+        if (!optProduct.isPresent()) {
+            throw new Exception("Produto não encontrado para atualização");
+        }
+    
+        Product produtoExistente = optProduct.get();
+    
+        // Mantém o mesmo ID do produto existente
+        productAtualizado.setProductId(produtoExistente.getProductId());
+    
+        try {
+            // Salva o produto atualizado, possivelmente com nova categoria
+            this.productRepository.save(productAtualizado);
+    
+            // Se a categoria mudou, é necessário deletar o produto antigo
+            if (!produtoExistente.getProductCategory().equals(productAtualizado.getProductCategory())) {
+                this.productRepository.deleteById(productId, new PartitionKey(produtoExistente.getProductCategory()));
+            }
+        } catch (Exception e) {
+            throw new Exception("Erro ao atualizar o produto: " + e.getMessage());
+        }
+    }
+}    
