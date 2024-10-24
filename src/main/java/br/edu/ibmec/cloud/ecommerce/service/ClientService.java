@@ -1,5 +1,6 @@
 package br.edu.ibmec.cloud.ecommerce.service;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,16 +15,38 @@ public class ClientService {
     private ClientRepository clienteRepository;
 
     public void save(Client cliente) {
+        // Verifica se já existe um cliente com o mesmo CPF
+        Optional<Client> existingClientByCpf = clienteRepository.findByCpf(cliente.getCpf());
+        if (existingClientByCpf.isPresent()) {
+            throw new IllegalArgumentException("CPF já cadastrado.");
+        }
+    
+        // Verifica se já existe um cliente com o mesmo e-mail
+        List<Client> existingClientByEmail = clienteRepository.findByEmail(cliente.getEmail());
+        if (!existingClientByEmail.isEmpty()) { // Verifica se a lista não está vazia
+            throw new IllegalArgumentException("E-mail já cadastrado.");
+        }
+    
+        // Gera um novo ID para o cliente
         cliente.setClienteId(UUID.randomUUID().toString());
+        // Salva o cliente no banco de dados
         this.clienteRepository.save(cliente);
     }
-
+    
     public java.util.Optional<Client> findById(String clienteId) {
         return this.clienteRepository.findById(clienteId);
     }
 
     public List<Client> findByNome(String nome) {
         return this.clienteRepository.findByNome(nome);
+    }
+
+    public List<Client> findByEmail(String email) {
+        return clienteRepository.findByEmail(email);
+    }
+
+    public Optional<Client> findByCpf(String cpf) {
+        return clienteRepository.findByCpf(cpf);
     }
 
     public List<Client> findByRegiao(String regiao) {

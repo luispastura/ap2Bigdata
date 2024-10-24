@@ -32,6 +32,13 @@ public class ClienteController {
         }
     }
 
+    @GetMapping("/byCpf/{cpf}")
+    public ResponseEntity<Client> getClientByCpf(@PathVariable("cpf") String cpf) {
+        Optional<Client> client = this.service.findByCpf(cpf);
+        return client.map(ResponseEntity::ok)
+                     .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     @GetMapping("/nome")
     public ResponseEntity<List<Client>> getByNome(@RequestParam String nome) {
         List<Client> clientes = this.service.findByNome(nome);

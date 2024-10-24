@@ -1,13 +1,10 @@
 package br.edu.ibmec.cloud.ecommerce.service;
 import java.time.LocalDateTime;
-
 import java.util.*;
-
 import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import br.edu.ibmec.cloud.ecommerce.entity.Client;
 import br.edu.ibmec.cloud.ecommerce.entity.Compra;
 import br.edu.ibmec.cloud.ecommerce.entity.Product;
